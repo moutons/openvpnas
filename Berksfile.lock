@@ -1,0 +1,24 @@
+DEPENDENCIES
+  apt
+  chef-sugar (~> 3.0.1)
+  citadel
+    git: https://github.com/balanced-cookbooks/citadel.git
+    revision: 2352803e8fb9af367453fcb81a379de1eefa487a
+  line
+  openvpnas
+    path: .
+    metadata: true
+  yum
+
+GRAPH
+  apt (6.1.0)
+  chef-sugar (3.0.1)
+  citadel (1.0.2)
+  line (0.6.3)
+  openvpnas (0.1.7)
+    apt (>= 0.0.0)
+    chef-sugar (>= 0.0.0)
+    citadel (>= 0.0.0)
+    line (>= 0.0.0)
+    yum (>= 0.0.0)
+  yum (5.0.1)

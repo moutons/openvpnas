@@ -1,20 +1,54 @@
+---
 driver:
-  name: vagrant
+  #name: vagrant
+  name: ec2
+  security_group_ids: ["sg-84d2f9e3", "sg-1bd8f77c"]
+  subnet_id: subnet-ae035cca
+  #region: us-west-1a
+  availability_zone: us-west-1a
+  require_chef_omnibus: true
+  instance_type: t2.micro
+  #name: docker
+  aws_ssh_key_id: rudy-mbp
+  vpc_mode: true
+  vpc: vpc-cca323a8
+  interface: public
+  associate_public_ip: true
+
 
 provisioner:
   name: chef_zero
+  # You may wish to disable always updating cookbooks in CI or other testing environments.
+  # For example:
+  #   always_update_cookbooks: <%= !ENV['CI'] %>
+  always_update_cookbooks: true
+
+verifier:
+  name: inspec
 
 platforms:
-  - name: centos-6.7
-  - name: centos-7.2
-  - name: ubuntu-12.04
-  - name: ubuntu-14.04
   - name: ubuntu-16.04
+  #- name: centos-6.7
+  #- name: centos-7.2
+  #- name: ubuntu-12.04
+  #- name: ubuntu-14.04
+  #- name: centos-7.3
+    transport:
+      ssh_key: ~/.ssh/rudy-mbp.pem
+      aws_ssh_key_id: rudy-mbp
 
 suites:
   - name: default
     run_list:
+      #- recipe[gg-openvpn::default]
       - recipe[openvpnas::default]
     attributes:
       openvpnas:
         company_name: company_name
+      citadel:
+        access_key_id: <%= ENV['AWS_ACCESS_KEY_ID'] %>
+        secret_access_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
+    verifier:
+      inspec_tests:
+        - test/smoke/default
+    attributes:

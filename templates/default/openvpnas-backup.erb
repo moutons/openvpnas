@@ -36,9 +36,9 @@ cd $BACKUP_DIR
 tar cf - . | gzip -c > $BACKUP_NAME.tar.gz
 
 # upload to our s3 bucket
-cd $BACKUP_DIR
-echo "uploading $BACKUP_NAME.tar.gz"
-aws s3 cp $BACKUP_NAME.tar.gz s3://$BACKUP_BUCKET/$BACKUP_NAME.tar.gz --acl private
+#cd $BACKUP_DIR
+#echo "uploading $BACKUP_NAME.tar.gz"
+#aws s3 cp $BACKUP_NAME.tar.gz s3://$BACKUP_BUCKET/$BACKUP_NAME.tar.gz --acl private
 
 # cleanup
 rm -rf $BACKUP_DIR

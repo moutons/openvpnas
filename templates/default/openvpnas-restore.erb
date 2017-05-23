@@ -11,6 +11,7 @@
 # userprop.db
 
 OPENVPNAS_DIR=<%= node['openvpnas']['dir'] %>
+BACKUP_DIR=/tmp/openvpnas_backup
 RESTORE_BUCKET=<%= node['openvpnas']['backup']['bucket'] %>
 RESTORE_DIR=/tmp/openvpnas_restore
 
@@ -37,8 +38,11 @@ mkdir -p $RESTORE_DIR
 cd $RESTORE_DIR
 
 # download the latest backup
-RESTORE_NAME=$(/usr/local/bin/aws s3 ls s3://$RESTORE_BUCKET | grep -o 'openvpnas-backup[^\n]*' | tail -1)
-/usr/local/bin/aws s3 cp s3://$RESTORE_BUCKET/$RESTORE_NAME openvpnas-backup.tar.gz
+#RESTORE_NAME=$(/usr/local/bin/aws s3 ls s3://$RESTORE_BUCKET | grep -o 'openvpnas-backup[^\n]*' | tail -1)
+#/usr/local/bin/aws s3 cp s3://$RESTORE_BUCKET/$RESTORE_NAME openvpnas-backup.tar.gz
+
+RESTORE_NAME=$(ls -1 $BACKUP_DIR | grep -o 'openvpnas-backup[^\n]*' | tail -1)
+cp $BACKUP_DIR/$RESTORE_NAME openvpnas-backup.tar.gz
 
 # extract the backup to the temp dir
 
